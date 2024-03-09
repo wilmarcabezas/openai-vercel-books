@@ -12,7 +12,7 @@ const getBooks = async () => {
 
 const getBooksByName = async (name) => {
     try {
-         const result = await client.query("SELECT * FROM books WHERE name LIKE $1", [`%${name}%`]);
+         const result = await client.query("SELECT * FROM books WHERE upper(name) LIKE upper($1)", [`%${name}%`]);
          return result.rows;
     }
     catch (err) {
