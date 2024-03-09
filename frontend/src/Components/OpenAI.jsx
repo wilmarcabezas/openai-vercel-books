@@ -23,7 +23,7 @@ export function OpenAI() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer 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'
+                    'Authorization': 'Bearer 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'
                 },
                 body: JSON.stringify({
                     model: 'gpt-3.5-turbo',
@@ -38,9 +38,24 @@ export function OpenAI() {
             })
                 .then(response => response.json())
                 .then(dataIA => {
-                    console.log('test 3');
-                    console.log(dataIA);
                     setAutor(dataIA.choices[0].message.content);
+                    fetch('http://localhost:4500/books', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: libroBuscado,
+                            author: dataIA.choices[0].message.content
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(dataSave => {
+                        console.log('Book and author saved successfully:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
                 })
             }
         })
